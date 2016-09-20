@@ -60,6 +60,7 @@ class Mongo:
         self.mapped_id_new = self.db['mapped_id_new']
 	self.routes_tw = self.db["routes_tw"]
         self.routes_tw2 = self.db["routes_tw2"] #This is for >=5 posts in a route
+	self.routes_ig = self.db["routes_ig"] #this is for >=5 posts in a route ig.
 	self.routes = self.db["instagram_routes"]
         self.ig_train = self.db["instagram_train_routes"]
         self.ig_test = self.db["instagram_test_routes"]

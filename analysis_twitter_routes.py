@@ -1,3 +1,11 @@
+# The following script computes the
+# a. Number of routes in the Twitter database.
+# b. Number of Routes per user
+# c. a Historgram of the Number of users with N number of routes per user. 
+# d. The script saves the histogram data in csv format. 
+
+
+
 from config import Mongo
 import csv
 import pandas as pd
