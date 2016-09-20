@@ -108,15 +108,13 @@ def compute_distance(route):
 		
 		coord_1 = route[x]['location']
 		coord_2 = route[x+1]['location']
-		try:
-			diff = haversine(coord_1,coord_2)
-			if diff > MAX_DISTANCE: # more than 50 km between the two points
-				print "error -- too much distance"
+
+		diff = haversine(coord_1,coord_2)
+		if diff > MAX_DISTANCE: # more than 50 km between the two points
+			print "error -- too much distance"
 		
-			list_distances.append(diff)
-		except:
-			print "error in haversine computation coord1: %s coord2" % route[x],route[x+1]
-			
+		list_distances.append(diff)
+
 	return list_distances
 
 def haversine(coord_1,coord_2):
