@@ -1,0 +1,60 @@
+from copy import deepcopy
+from config import Mongo, haversine
+from datetime import datetime
+import json,csv
+import traceback
+from random import randint, sample
+import sys
+from math import radians, cos, sin, asin, sqrt,atan2
+
+db = Mongo()
+MIN_DISTANCE = .5 # 1 km between points
+MAX_DISTANCE = 50 #50 kilometers between points. 
+MIN_TIME = 300 # 10 MINUTES IN SECONDS 
+MAX_TIME = 86400 #1 DAY IN SECONDS
+MIN_ROUTE_UNIQUE_POSTS = 5 
+
+def main():
+
+	print "Hello"
+	n = 2 
+	#Compute Query Routes given "N"
+	
+	q_routes = compute_q_routes(n)
+
+def compute_q_routes(n):
+	print "\nStart compute q routes\n"	
+	q_route_list = []
+
+	routes_cursor = db.routes_ig.find()
+	routes_list = conv_cursor_to_list(routes_cursor)
+	
+	for i in range(0,len(routes_list)):
+		
+		all_pts = routes_list[i]['route'][0]
+
+		#Randomly select n number from list of 0,len(all_points_of_a_route)
+		s = sample(all_pts,n)
+		#Add query route to general list. 				
+		q_route_list.append(s)
+		if (i+1) % 5 == 0:
+			break
+	
+	print "\n end for loop\n" 
+	print "list %s" % (len(q_route_list))
+	for i in q_route_list:
+		print i
+		print "\n"
+
+
+	print "\nDone"
+
+
+def conv_cursor_to_list(routes):
+	posts = []
+	for i in routes:
+		posts.append(i)
+	return posts
+
+main()
+

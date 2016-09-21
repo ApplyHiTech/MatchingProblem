@@ -1,0 +1,7 @@
+Hello
+Traceback (most recent call last):
+  File "cr_simulation.py", line 110, in <module>
+    main()
+  File "cr_simulation.py", line 30, in main
+    print "%s,%" % (i, matches)
+ValueError: incomplete format
