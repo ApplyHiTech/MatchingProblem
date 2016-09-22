@@ -27,7 +27,7 @@ def main():
 		#does iroute match:
 		matches = compute_matches(iroute,[MIN_TIME,MAX_TIME],[MIN_DISTANCE,MAX_DISTANCE])
 		res.append([iroute, matches]) 
-		print "%s,%" % (i, matches)
+		print "%s,%s" % (i, matches)
 		i+=1	
 
 def compute_matches(iroute,t,d):
