@@ -5,30 +5,48 @@ import json,csv
 import traceback
 from random import randint, sample
 import sys
+import pandas as pd
 from math import radians, cos, sin, asin, sqrt,atan2,fabs
 
 db = Mongo()
-MIN_DISTANCE = 0 # 1 km between points
-MAX_DISTANCE = 1 #50 kilometers between points. 
-MIN_TIME = 0 # 10 MINUTES IN SECONDS 
-MAX_TIME = 3600 #1 DAY IN SECONDS
 MIN_ROUTE_UNIQUE_POSTS = 5 
 
 def main():
 
-	print "Hello"
-	n = 2 
+	n_values = [1,2,3,4,5] 
+	t_values = [900,1800,2700,3600,4500,5400,6300,7200] #seconds
+	d_values = [.1,.2,.3,.4,.5,.6,.7,.8,.9,1] #100 meters or 0.1 km 
+
+	print "Start n"	
+	for n in n_values:
+		print "N=%s --- start t\n" % n
+		for t in t_values:
+			print "N=%s T=%s -- start d\n" % (n,t)
+			for d in d_values:
+				print "N=%s T=%s D=%s" %(n,t,d) 
+				#simulate
+				result = run_simulator(n,t,d)
+				#end simulate
+				df = pd.DataFrame(result)
+				filename = "test+%s+%s+%s.csv" % (n,t,d)
+				df.to_csv(filename,sep=',')
+
+def run_simulator(n,t,d):
 	#Compute Query Routes given "N"
 	
 	q_routes = compute_q_routes(n)
-	res = []
+	result=[]
 	i=0
 	for iroute in q_routes:
 		#does iroute match:
-		matches = compute_matches(iroute,[MIN_TIME,MAX_TIME],[MIN_DISTANCE,MAX_DISTANCE])
-		res.append([iroute, matches]) 
-		print "%s,%s" % (i, matches)
-		i+=1	
+		matches = compute_matches(iroute,t,d)
+		dict1= {}
+		dict1= {"n": n, "t":t, "d":d,"matches":matches}
+		result.append(dict1)
+
+		#print "%s" % (dict1)
+		i+=1
+	return result
 
 def compute_matches(iroute,t,d):
 
@@ -60,7 +78,7 @@ def point_with(a_route,a_point,t,d):
 		b_t = a_point['created_time']
 		dist = haversine(loc,b_loc)
 		delta_t = fabs(a_t-b_t)
-		if dist >= min(d) and dist <= max(d) and delta_t >= min(t) and delta_t <= max(t):
+		if dist <= d and delta_t <= t:
 			return True
 	return False
 
